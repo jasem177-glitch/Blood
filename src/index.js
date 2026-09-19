@@ -1,7 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, REST, Routes } = require("discord.js");
 
 const client = new Client({
   intents: [
@@ -16,10 +16,24 @@ const client = new Client({
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs.readdirSync(commandsPath).filter((f) => f.endsWith(".js"));
+const commandsData = [];
 
 for (const file of commandFiles) {
   const command = require(path.join(commandsPath, file));
   client.commands.set(command.data.name, command);
+  commandsData.push(command.data.toJSON());
+}
+
+// تسجيل الأوامر تلقائياً عند كل تشغيل للبوت
+async function registerCommands() {
+  try {
+    const rest = new REST().setToken(process.env.DISCORD_TOKEN);
+    console.log(`⏳ يتم تسجيل ${commandsData.length} أوامر تلقائياً...`);
+    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commandsData });
+    console.log("✅ تم تسجيل الأوامر بنجاح!");
+  } catch (error) {
+    console.error("❌ خطأ أثناء تسجيل الأوامر:", error);
+  }
 }
 
 // تحميل الأحداث
@@ -55,4 +69,5 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+registerCommands();
 client.login(process.env.DISCORD_TOKEN);
