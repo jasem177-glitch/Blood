@@ -91,4 +91,11 @@ async function generateRankCard(opts) {
 }
 
 function drawGradientBackground(ctx) {
-  const gradient = ctx.createLinearGradient(0, 0, WIDTH, HEI
+  const gradient = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+  gradient.addColorStop(0, config.colors.background1);
+  gradient.addColorStop(1, config.colors.background2);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+}
+
+module.exports = { generateRankCard };
