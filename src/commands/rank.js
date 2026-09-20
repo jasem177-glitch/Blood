@@ -2,6 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const db = require("../database");
 const { getProgress } = require("../utils/xpUtils");
 const { generateRankCard } = require("../utils/rankCard");
+const config = require("../config");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -29,7 +30,7 @@ module.exports = {
     const imageBuffer = await generateRankCard({
       username: displayName,
       avatarUrl,
-      backgroundUrl: stats.background,
+      backgroundUrl: stats.background || config.defaultBackground,
       level,
       rank: rank || leaderboard.length + 1,
       xpIntoLevel,
