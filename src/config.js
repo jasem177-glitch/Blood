@@ -7,7 +7,7 @@ module.exports = {
   cooldownSeconds: 60,
 
   // الخلفية الافتراضية لبطاقة الرانك (رابط صورة أو لون تدرّجي إذا ما فيه رابط)
-  defaultBackground: null,
+  defaultBackground: "https://i.imgur.com/BfXadOm.jpg",
 
   // ألوان بطاقة الرانك الافتراضية
   colors: {
